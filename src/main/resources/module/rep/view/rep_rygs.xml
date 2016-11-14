@@ -41,6 +41,10 @@
 						<text name="query_scph" placeholder="请输入生产批号" layoutconstraint="md:4;sm:4;" validate="{required:true}"/>
 					</form-group>
 					<form-group>
+						<label for="query_lckbh" text="流程卡编号" layoutconstraint="md:2;"/>
+						<text name="query_lckbh" placeholder="请输入流程卡编号" layoutconstraint="md:4;sm:4;" validate="{required:true}"/>
+					</form-group>
+					<form-group>
 						<label for="query_rq" text="日期" layoutconstraint="md:2"/>
 						<bunch layoutconstraint="md:8">
 							<input-inline width="medium">
@@ -80,6 +84,7 @@
 			data_row.query_scph = $('#query_scph').val();
 			data_row.query_rqstart = $('#query_rqstart').val();
 			data_row.query_rqend = $('#query_rqend').val();
+			data_row.query_lckbh = $('#query_lckbh').val();
 			if(new Date(data_row.query_rqstart)>new Date(data_row.query_rqend))
 			{
 				ui.warn("接收时间区间开始时间必须小于结束时间!", "提示!");

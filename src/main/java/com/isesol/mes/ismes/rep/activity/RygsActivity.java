@@ -56,11 +56,13 @@ public class RygsActivity {
 		String query_yggh = parameters.getString("query_yggh");// --员工工号--user_wh_ryjbxx
 		String query_wlbh = parameters.getString("query_wlbh");// --零件图号---mm_mm_wlb
 		String query_scph = parameters.getString("query_scph");// --生产批号---pl_pl_gdb
+		String query_lckbh = parameters.getString("query_lckbh");// --流程卡编号---pl_pl_gdb
 		parameters.set("rqstart", query_rqstart == null ? "" : query_rqstart);
 		parameters.set("rqend", query_rqend == null ? "" : query_rqend);
 		parameters.set("yggh", query_yggh == null ? "" : query_yggh);
 		parameters.set("ljbh", query_wlbh == null ? "" : query_wlbh);
 		parameters.set("scph", query_scph == null ? "" : query_scph);
+		parameters.set("query_lckbh", query_lckbh == null ? "" : query_lckbh);
 
 		List<Map<String, Object>> gdb_list = new ArrayList();
 		List<Map<String, Object>> ry_list = new ArrayList();

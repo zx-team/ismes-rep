@@ -13,7 +13,7 @@
 		<column label="设备位置" name="sbwz"></column>
 		<column label="领用时间" name="jssj" type="date" width="130"></column>
 		<column label="领用人" name="jsz"></column>
-		<column label="有效期" name="sysm"></column>
+		<column label="有效期" name="yxq" type="date"></column>
 		<column label="状态" name="kczt" type="dict" dictionary="KCZT"></column>
 	</table>
 	

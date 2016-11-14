@@ -80,6 +80,7 @@ public class WlkcActivity {
 		List<Map<String, Object>> sbxx = new ArrayList();
 		List<Map<String, Object>> kcxx = new ArrayList();
 		List<Map<String, Object>> kcxx_gz = new ArrayList();
+		List<Map<String, Object>> kcxxmx = new ArrayList();
 		List<Map<String, Object>> kfxx_kfmc = new ArrayList();
 		List<Map<String, Object>> kwxx_kwmc = new ArrayList();
 		// 判断并查询物料编号、名称、类别等信息by物料信息表
@@ -133,6 +134,27 @@ public class WlkcActivity {
 			// 查询库存信息_工装
 			Bundle b_kcxx_gz = Sys.callModuleService("wm", "wmService_query_kcxx_gz", parameters);
 			kcxx_gz = (List<Map<String, Object>>) b_kcxx_gz.get("kcxx");
+
+			for(int i=0;i<kcxx_gz.size();i++){
+				parameters.set("sjwlkcid", kcxx_gz.get(i).get("sjwlkcid"));
+				Bundle b_kcxxmx = Sys.callModuleService("wm", "wmService_query_kcxxmxBySjwlkcid", parameters);
+				kcxxmx = (List<Map<String, Object>>) b_kcxxmx.get("kcxx");
+				kcxx_gz.get(i).put("yxq", kcxxmx.get(0).get("yxq"));
+//				czsj, wlgg, kcsl, kfid, kwid, wlid, wltm, pcid, mplh, wllb, sjwlkcid
+//				kczt, ckry, wlgg, kfid, rksj, rksl, wlid, rkdh, mplh, sjwlkcid,  cksl, cksj, yxq, kwid, rkry, wlkcmxid, pcid, wllb, jh
+				if(kcxxmx.size()>1){
+					String wltm = (String) kcxx_gz.get(i).get("wltm");
+					String pcid = (String) kcxx_gz.get(i).get("pcid");
+					kcxx_gz.remove(i);
+//					kcxx_gz.add(i,(Map<String, Object>) kcxxmx);
+					for(int j=0;j<kcxxmx.size();j++){
+						kcxxmx.get(j).put("wltm", wltm);
+						kcxxmx.get(j).put("pcid", pcid);
+						kcxx_gz.add(i,kcxxmx.get(j));
+						i++;
+					}
+				}
+			}
 			// 将库存数据与工装表数据拼接一起
 			int sizeall = kcxx.size() + kcxx_gz.size();
 			int size_kc = kcxx.size();
@@ -142,14 +164,6 @@ public class WlkcActivity {
 				if (null != kcxx_gz.get(j)) {
 					Map map = new HashMap();
 					for (; j < size_gz;) {
-//						map.put("wllb", kcxx_gz.get(j).get("wllb"));
-//						map.put("jssj", kcxx_gz.get(j).get("jssj"));
-//						map.put("jsz", kcxx_gz.get(j).get("jsz"));
-//						map.put("wlmc", kcxx_gz.get(j).get("wlmc"));
-//						map.put("wlbh", kcxx_gz.get(j).get("wlbh"));
-//						map.put("sysm", kcxx_gz.get(j).get("sysm"));
-//						map.put("sbwz", kcxx_gz.get(j).get("sbwz"));
-//						map.put("kczt", "1");
 						map = kcxx_gz.get(j);
 						break;
 					}
@@ -486,7 +500,7 @@ public class WlkcActivity {
 		InputStream is = null;
 		Map setting = new HashMap();
 		setting.put("cellTitle", "物料编号,物料名称,物料类别,库房,库位,设备位置,接收时间,领用人,使用寿命,状态");
-		setting.put("cellIndex", "wlbh,wlmc,wllb,kfmc,kwmc,sbwz,jssj,jsz,sysm,kczt");
+		setting.put("cellIndex", "wlbh,wlmc,wllb,kfmc,kwmc,sbwz,jssj,jsz,yxq,kczt");
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).remove("czsj");
 			list.get(i).remove("wlgg");
@@ -555,8 +569,8 @@ public class WlkcActivity {
 			if (null == list.get(i).get("jsz")) {
 				list.get(i).put("jsz", "");
 			}
-			if (null == list.get(i).get("sysm")) {
-				list.get(i).put("sysm", "");
+			if (null == list.get(i).get("yxq")) {
+				list.get(i).put("yxq", "");
 			}
 			if (null == list.get(i).get("kczt")) {
 				list.get(i).put("kczt", "");

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="rep_scqkrhb" title="生产情况日汇表">
+	<panel>
+		<panel-body>
+		<normal-actions>
+		<button name="returnBtn" label="返回"  type="button" context="primary" onClick="goback" ></button>
+		</normal-actions>
+			<plaintext text="部门：" lead="true" type="strong" layoutconstraint="md:2;" context="primary"/>
+			<plaintext name="zzjgbh" bind="part.zzjgmc"  lead="true" type="strong" layoutconstraint="md:3;" context="primary"/>
+			<plaintext text="报表日期：" lead="true" type="strong" layoutconstraint="md:2;" context="primary"/>
+			<plaintext name="rq" bind="part.bbrq"  lead="true" type="strong" layoutconstraint="md:3;" context="primary"/>
+			<table name="table_scqkrhb" scroll="false"  url="" layoutconstraint="md:12;sm:12;"  >
+				<attribute name="url"><![CDATA[/scbb/table_scqkrhb?zzjgbh=${part.zzjgbh}&bbrq=${part.bbrq}]]></attribute>
+				<column label="生产任务编号" name="scrwbh" editable="true" ></column>
+				<column label="计划加工数量" name="jhjgsl" editable="true" ></column>
+				<column label="实际完成数量" name="sjwcsl" editable="true" ></column>
+				<column label="在制数量" name="zzsl" editable="true" ></column>
+				<column label="库存数量" name="kcsl" editable="true" ></column>
+			</table>
+		</panel-body>
+	</panel>
+	<attribute name="javascript">
+		<![CDATA[
+		//返回统计报表页面
+		function goback() {
+			window.location.href=ui.getRealUrl("/tjbb/show_tjbb");
+		}
+		]]>
+	</attribute>
+</view>

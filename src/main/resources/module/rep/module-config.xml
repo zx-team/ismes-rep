@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="rep" version="1.0.0" category="system">
+	<information>
+		<name>System Report Management</name>
+		<vendor>
+			<name>Isesol isMES</name>
+			<url>http://www.isesol.com/</url>
+		</vendor>
+		<description>User is a module which adds organization functionality to system.</description>
+		<license>AGPL</license>
+	</information>
+	<activities>
+		<!-- 统计报表 -->
+		<activity name="tjbb" dialect="java" roles="MANUFACTURING_MANAGEMENT_ROLE" class="com.isesol.mes.ismes.rep.activity.StatementActivity"/>
+		<activity name="wlkc" dialect="java" roles="MANUFACTURING_MANAGEMENT_ROLE" class="com.isesol.mes.ismes.rep.activity.WlkcActivity"/>
+		<!-- 生产报表 包括 生产日报表、生产情况日报表、生产情况月报表-->
+		<activity name="scbb" dialect="java" roles="MANUFACTURING_MANAGEMENT_ROLE" class="com.isesol.mes.ismes.rep.activity.ProductionReportActivity"/>
+		<activity name="jyjl" dialect="java" roles="MANUFACTURING_MANAGEMENT_ROLE" class="com.isesol.mes.ismes.rep.activity.JyjlActivity"/>
+		<activity name="rygs" dialect="java" roles="MANUFACTURING_MANAGEMENT_ROLE" class="com.isesol.mes.ismes.rep.activity.RygsActivity"/>
+	</activities>
+	<roles>
+		<role name="MANUFACTURING_MANAGEMENT_ROLE" label="生产管理人员_报表" description="生产管理相关" />
+	</roles>
+	<menus>
+		<!-- 统计报表（一级） -->
+		<category name="statement" label="统计报表" icon="#00bdc4;Management" weight="7"/>
+		<menu name="statement_main" label="统计报表" activity="tjbb" activity-method="show_tjbb" 
+			category="statement" roles="MANUFACTURING_MANAGEMENT_ROLE" description="统计报表" icon="button" weight="10"/>
+		<menu name="statement_main1" label="工装库存查询" activity="wlkc" activity-method="query_wlkc" 
+			category="statement" roles="MANUFACTURING_MANAGEMENT_ROLE" description="工装库存查询" icon="button" weight="20"/>
+		<menu name="statement_main2" label="检验记录查询" activity="jyjl" activity-method="query_jyjl" 
+			category="statement" roles="MANUFACTURING_MANAGEMENT_ROLE" description="检验记录查询" icon="button" weight="20"/>
+		<menu name="statement_main3" label="人员工时查询" activity="rygs" activity-method="query_rygs" 
+			category="statement" roles="MANUFACTURING_MANAGEMENT_ROLE" description="人员工时查询" icon="button" weight="20"/>
+	</menus>
+	<services>
+	</services>
+</module>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="rep_rygs" title="人员工时查询">
+	<normal-actions>
+		<button name="queryBtn" label="查询"  type="button" icon="icon-query" onClick="openQueryWindow"></button>
+		<button name="queryBtn1" label="导出excel"  type="button" icon="icon-query" onClick="exportExcelQuery"></button>
+	</normal-actions>
+	<table name="table_rygs" scroll="false"  url="/rygs/table_rygs" minheight="430" multiselect="false" layoutconstraint="md:12;sm:12;" >
+		<column label="日期" name="gdscsj" type="date" width="130"></column>
+		<column label="人员姓名" name="xm"></column>
+		<column label="员工工号" name="yggh"></column>
+		<column label="零件规格" name="wlgg"></column>
+		<column label="零件图号" name="wlbh"></column>
+		<column label="生产批号" name="pcid"></column>
+		<column label="流程卡编号" name="xh"></column>
+		<column label="工序组名称" name="gxzmc"></column>
+		<column label="设备组名称" name="jgdymc"></column>
+		<column label="报工合格数量" name="gdywcsl"></column>
+		<column label="报废工费" name="bfgf"></column>
+		<column label="报废料废" name="bflf"></column>
+		<column label="报工差异数量" name="bgcysl"></column>
+		<column label="设备加工节拍" name="jgjp"></column>
+		<column label="有效工时" name="yxgs"></column>
+		<column label="排班工时" name="pbgs"></column>
+		<column label="人员负荷" name="ryfh"></column>
+	</table>
+	
+	<modal name="qyeryModal" heading="查询人员工时" sizing="large" show="false" keyboard="true">
+		<modal-body>
+			<form name="qyeryRygsForm"  horizontal="true" layoutconstraint="md-offset:1">
+				<form-body>
+					<form-group>
+						<label for="query_yggh" text="员工工号" layoutconstraint="md:2;"/>
+						<text name="query_yggh" placeholder="请输入员工工号" layoutconstraint="md:4;sm:4;" validate="{required:true}"/> 
+					</form-group>
+					<form-group>
+						<label for="query_wlbh" text="零件图号" layoutconstraint="md:2;"/>
+						<text name="query_wlbh" placeholder="请输入零件图号" layoutconstraint="md:4;sm:4;" validate="{required:true}"/>
+					</form-group>
+					<form-group>
+						<label for="query_scph" text="生产批号" layoutconstraint="md:2;"/>
+						<text name="query_scph" placeholder="请输入生产批号" layoutconstraint="md:4;sm:4;" validate="{required:true}"/>
+					</form-group>
+					<form-group>
+						<label for="query_rq" text="日期" layoutconstraint="md:2"/>
+						<bunch layoutconstraint="md:8">
+							<input-inline width="medium">
+							<date name="query_rqstart" placeholder="请输入起始日期" validate="{required:true}"/>
+							</input-inline>
+							<plaintext text="-"/>
+							<input-inline width="medium">
+							<date name="query_rqend" placeholder="请输入结束日期" validate="{required:true}"/>
+							</input-inline>
+						</bunch>
+ 					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+				<button name="closeqyeryModalClick" label="取消" type="button" onClick="closeQueryWindow"></button>
+				<button name="qyeryModalClick" label="查询" type="button" context="primary" onClick="queryBtnClick"></button>
+				
+		</modal-footer>
+	</modal>
+	
+	<attribute name="javascript">
+	<![CDATA[
+		function openQueryWindow() {
+			resetQueryWindow();//清理数据
+	    	ui.modal("qyeryModal").show();
+	    }	
+	    
+	    function resetQueryWindow() {
+	    	 $('#qyeryRygsForm')[0].reset();
+	    }
+	    //查询
+		function queryBtnClick(){
+			var data_row = {};
+			data_row.query_yggh = $('#query_yggh').val();
+			data_row.query_wlbh = $('#query_wlbh').val();
+			data_row.query_scph = $('#query_scph').val();
+			data_row.query_rqstart = $('#query_rqstart').val();
+			data_row.query_rqend = $('#query_rqend').val();
+			if(new Date(data_row.query_rqstart)>new Date(data_row.query_rqend))
+			{
+				ui.warn("接收时间区间开始时间必须小于结束时间!", "提示!");
+				return false;
+			}
+			ui.table("table_rygs").search(data_row);
+			closeQueryWindow();
+		}
+		//关闭	
+	    function closeQueryWindow(){
+	   	 	ui.modal("qyeryModal").hide();
+	    }
+	    //excel导出
+		function exportExcelQuery(){
+			window.open(ui.getUrl("/rep/rygs/table_rygs")+"?export_flag=1"
+			+"&query_yggh="+$('#query_yggh').val()
+			+"&query_wlbh="+$('#query_wlbh').val()
+			+"&query_scph="+$('#query_scph').val()
+			+"&query_rqend="+$('#query_rqend').val()
+			+"&query_rqstart="+$('#query_rqstart').val()
+			)
+		}
+	]]>
+	</attribute>
+</view>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 生产情况月汇报表 -->
+<model version="1.0.2" name="rep_scqkyhb">
+	<fields>
+		<bbyf type="string" required="true" length="6" comment="报表月份" label="报表月份"/>
+		<zzjgbh type="string" required="false" length="20" comment="部门编号" label="部门编号"/>
+		<scrwbh type="string" required="false" length="20" comment="生产任务编号" label="生产任务编号"/>
+		<jhjgsl type="integer" required="false" comment="计划加工数量" label="计划加工数量"/>
+		<sjwcsl type="integer" required="false" comment="实际完成数量" label="实际完成数量"/>
+		<zzsl type="integer" required="false" comment="在制数量" label="在制数量"/>
+		<kcsl type="integer" required="false" comment="库存数量" label="库存数量"/>
+	</fields>
+</model>

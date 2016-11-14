@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="rep_tjbb" title="统计报表">
+	
+	<tabs>
+		<tab-nav>
+			<tab name="form-manager" label="管理" context="primary"/>
+			<tab name="form-production" label="生产" context="primary" active="true"/>
+			<tab name="form-quality" label="质量" context="primary"/>
+			<tab name="form-personnel" label="人员" context="primary"/>
+			<tab name="form-material" label="物料" context="primary"/>
+		</tab-nav>
+		<tab-content name="form-manager">
+			
+		</tab-content>
+		<tab-content name="form-production">
+			<bunch layoutconstraint="md:1;sm:1;">
+				<button name="scrb" label="生产日报"  type="button" onClick="showScrbModal" context="link"  />
+				<button name="scqkrhb" label="生产情况日汇表"  type="button" onClick="showScqkrhbModal" context="link"  />
+				<button name="scqkyhb" label="生产情况月汇表"  type="button" onClick="showScqkyhbModal" context="link"  />
+			</bunch>
+		</tab-content>
+		<tab-content name="form-quality">
+			
+		</tab-content>
+		<tab-content name="form-personnel">
+			
+		</tab-content>
+		<tab-content name="form-material">
+			
+		</tab-content>
+	</tabs>
+	
+	<modal name="qyeryScrbModal" heading="生产日报表" sizing="large" show="false" keyboard="true">
+		<modal-body>
+			<form name="form_scrb"  action="/scbb/query_scrb" horizontal="true">
+				<form-body>
+					<form-group>
+						<label for="zzjgbh " text="部门" layoutconstraint="md:2;sm:2"/>
+						 <select name="zzjgbh" validate="{required:true}" dictionary="请选择部门" placeholder="请选择部门"  layoutconstraint="md:4;" url="cjSelect"/>
+						<label for="bbrq" text="日期" layoutconstraint="md:2;sm:2"/>
+						<date name="bbrq" placeholder="请选择日期" validate="{required:true}" layoutconstraint="md:4;sm:4;"/>
+					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+			<button name="queryScrbBtn" label="查询" type="button" context="primary" onClick="queryScrb"></button>
+			<!-- <button name="closeBtn" label="取消" type="button" context="primary"  onClick="closeWindow"></button> -->
+		</modal-footer>
+	</modal>
+
+	<modal name="qyeryScqkrhbModal" heading="生产情况日汇表" sizing="large" show="false" keyboard="true">
+		<modal-body>
+			<form name="form_scqkrhb"  action="/scbb/query_scqkrhb" horizontal="true">
+				<form-body>
+					<form-group>
+						<label for="scqkrhb_zzjgbh" text="部门" layoutconstraint="md:2;sm:2"/>
+						 <select name="scqkrhb_zzjgbh" validate="{required:true}" dictionary="请选择部门" placeholder="请选择部门"  layoutconstraint="md:4;" url="cjSelect"></select>
+						<label for="scqkrhb_bbrq" text="日期" layoutconstraint="md:2;sm:2"/>
+						<date name="scqkrhb_bbrq" placeholder="请选择日期" validate="{required:true}" layoutconstraint="md:4;sm:4;"/>
+					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+			<button name="queryScqkrhbBtn" label="查询" type="button" context="primary" onClick="queryScqkrhb"></button>
+		</modal-footer>
+	</modal>
+	
+	<modal name="qyeryScqkyhbModal" heading="生产情况月汇表" sizing="large" show="false" keyboard="true">
+		<modal-body>
+			<form name="form_scqkyhb"  action="/scbb/query_scqkyhb" horizontal="true">
+				<form-body>
+					<form-group>
+						<label for="scqkyhb_zzjgbh" text="部门" layoutconstraint="md:2;sm:2"/>
+						 <select name="scqkyhb_zzjgbh" validate="{required:true}" dictionary="请选择部门" placeholder="请选择部门"  layoutconstraint="md:4;" url="cjSelect"></select>
+						<label for="scqkyhb_bbrq" text="日期" layoutconstraint="md:2;sm:2"/>
+						<date name="scqkyhb_bbrq" placeholder="请选择日期" validate="{required:true}" layoutconstraint="md:4;sm:4;"/>
+					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+			<button name="queryscqkyhbBtn" label="查询" type="button" context="primary" onClick="queryScqkyhb"></button>
+		</modal-footer>
+	</modal>
+	<attribute name="javascript">
+		<![CDATA[
+			function showScrbModal(){
+				ui.modal("qyeryScrbModal").show();
+			}
+			function showScqkrhbModal(){
+				ui.modal("qyeryScqkrhbModal").show();
+			}
+			function showScqkyhbModal(){
+				ui.modal("qyeryScqkyhbModal").show();
+			}
+			//生产日报表
+			function queryScrb(){
+				ui.form("form_scrb").submit();
+			}
+			//生产情况日汇表
+			function queryScqkrhb(){
+				ui.form("form_scqkrhb").submit();
+			}
+			//生产情况月汇表
+			function queryScqkyhb(){
+				ui.form("form_scqkyhb").submit();
+			}
+			function closeWindow(){
+				ui.modal("qyeryModal").hidden();
+			}
+		]]>
+	</attribute>
+	
+</view>

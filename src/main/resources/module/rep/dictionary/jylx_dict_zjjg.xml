@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="jylx_dict_zjjg" label="质检结果"  description="质检是否通过">
+	<field name="" value="10" label="通过" parent="" state="valid"/>
+	<field name="" value="20" label="不通过" parent="" state="valid"/>
+</category>

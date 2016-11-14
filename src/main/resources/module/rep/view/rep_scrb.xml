@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="rep_scrb" title="生产日报">
+	<panel>
+		<panel-body>
+			<normal-actions>
+				<button name="returnBtn" label="返回"  type="button" context="primary" onClick="goback" ></button>
+			</normal-actions>
+			<plaintext text="部门：" lead="true" type="strong" layoutconstraint="md:2;" context="primary"/>
+			<plaintext name="zzjgbh" bind="part.zzjgmc"  lead="true" type="strong" layoutconstraint="md:3;" context="primary"/>
+			<plaintext text="报表日期：" lead="true" type="strong" layoutconstraint="md:2;" context="primary"/>
+			<plaintext name="rq" bind="part.bbrq"  lead="true" type="strong" layoutconstraint="md:3;" context="primary"/>
+			<table name="table_scrb" scroll="false"  url="" layoutconstraint="md:12;sm:12;"  >
+				<attribute name="url"><![CDATA[/scbb/table_scrb?zzjgbh=${part.zzjgbh}&bbrq=${part.bbrq}]]></attribute>
+				<column label="工单号码" name="gdbh" editable="false" ></column>
+				<column label="零件号码" name="ljbh" editable="false" ></column>
+				<column label="件数" name="js" editable="false" ></column>
+				<column label="加工开始时间" name="jgkssj"  type="date"  editable="false" ></column>
+				<column label="加工结束时间" name="jgjjsj"  type="date"  editable="false" ></column>
+				<!-- <column label="报表日期" name="bbrq" ></column> -->
+				<column label="加工时长" name="jgsc" ></column>
+				<column label="部门编号" name="zzjgbh"  hidden="true"></column>
+			</table>
+		</panel-body>
+	</panel>
+	<attribute name="javascript">
+		<![CDATA[
+		//返回统计报表页面
+		function goback() {
+			window.location.href=ui.getRealUrl("/tjbb/show_tjbb");
+		}
+		]]>
+	</attribute>
+</view>

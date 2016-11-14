@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="jylx_dict_zjlx" label="检验类型"  description="质检结果的检验类型">
+	<field name="" value="10" label="首件" parent="" state="valid"/>
+	<field name="" value="20" label="中间件" parent="" state="valid"/>
+	<field name="" value="30" label="尾件" parent="" state="valid"/>
+	<field name="" value="40" label="换线" parent="" state="valid"/>
+</category>

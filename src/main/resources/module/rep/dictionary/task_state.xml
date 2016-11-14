@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="KCZT" label="库存状态"  description="任务状态代码">
+	<field name="" value="0" label="在库" parent="" state="valid"/>
+	<field name="" value="1" label="出库" parent="" state="valid"/>
+</category>

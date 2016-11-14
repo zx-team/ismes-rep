@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="rep_jyjl" title="质检结果查询">
+	<hidden name="query_jyxm_detail_hid" bind="detail_map.query_jyxm_detail"/>
+	<hidden name="query_gyyq_detail_hid" bind="detail_map.query_gyyq_detail"/>
+	<hidden name="query_yxsx_detail_hid" bind="detail_map.query_yxsx_detail"/>
+	<hidden name="query_yxxx_detail_hid" bind="detail_map.query_yxxx_detail"/>
+	
+	
+	<normal-actions>
+		<button name="queryBtn" label="查询"  type="button" icon="icon-query" onClick="openQueryWindow"></button>
+	</normal-actions>
+	<table name="table_jyjl" scroll="false"  url="/jyjl/table_jyjl" minheight="430" multiselect="false" layoutconstraint="md:12;sm:12;" >
+		<column hidden="true" key="true" name="zjjgzbid" label="主键ID"></column>
+		<column hidden="true" key="true" name="ljid" label="零件ID"></column>
+		<column hidden="true" key="true" name="gxzid" label="工序组ID"></column>
+		<column label="零件图号" name="ljbh"></column>
+		<column label="批次" name="scph"></column>
+		<column label="检验类型" name="zjbz" type="dict" dictionary="jylx_dict_zjlx"></column>
+		<column label="检验时间" name="zjsj" type="date" width="130"></column>
+		<column label="操作" name="table_action"  type="operation" editable="false">
+			<attribute name="formatoptions"><![CDATA[
+				[
+					{
+						name:"talbe_show_detail",
+						icon:"icon-query",
+						label:"查看检验记录",
+						click:openDetailWindow
+					}
+				]
+			]]></attribute>
+		</column>
+	</table>
+	<modal name="modal_jyjldetail" heading="质检结果明细信息" sizing="large" show="false" keyboard="true">
+		<modal-body>
+			<table name="table_jyjldetail" scroll="false"  url="/jyjl/table_jyjl_detail" minheight="430" multiselect="false" layoutconstraint="md:12;sm:12;" >
+				<column label="编号" name="zjjgid"></column>
+				<column label="类型" name="gxzjxlrmc"></column>
+				<column label="工艺要求" name="gyyq"></column>
+				<column label="检验结果" name="zjjg"></column>
+				<column label="检验时间" name="zjsj" type="date" width="130"></column>
+			</table>
+		</modal-body>
+	</modal>
+
+	<modal name="qyeryModal" heading="查询物料库存" sizing="large" show="false" keyboard="true"  onShown="resetQueryWindow">
+		<modal-body>
+			<form name="qyeryWlkcForm"  horizontal="true" layoutconstraint="md-offset:1">
+				<form-body>
+					<form-group>
+						<label for="query_xh" text="箱号" layoutconstraint="md:2;"/>
+						<text name="query_xh" placeholder="请输入箱号" layoutconstraint="md:4;sm:4;" />
+						<label for="query_zjbz" text="质检类型" layoutconstraint="md:2;"/>
+						<select name="query_zjbz" dictionary="jylx_dict_zjlx"  placeholder="请选择质检类型" layoutconstraint="md:4;"></select>
+					</form-group>
+					<form-group>
+						<label for="query_zjjgbzw" text="质检结果" layoutconstraint="md:2;"/>
+						<select name="query_zjjgbzw" dictionary="jylx_dict_zjjg"  placeholder="请选择质检结果" layoutconstraint="md:4;"></select>
+						<label for="query_jyxm_detail" text="检验项目" layoutconstraint="md:2;"/>
+						<select name="query_jyxm_detail" url="/jyjl/jyxmSelect"  placeholder="请选择检验项目" layoutconstraint="md:4;" ></select>
+					</form-group>
+					<form-group>
+						<label for="query_gyyq_detail" text="工艺要求" layoutconstraint="md:2;"/>
+						<text name="query_gyyq_detail" placeholder="请输入工艺要求" layoutconstraint="md:4;sm:4;" />
+						<label for="query_yxsx_detail" text="允许上限" layoutconstraint="md:2;"/>
+						<text name="query_yxsx_detail" placeholder="请输入允许上限" layoutconstraint="md:4;" validate="{required:false,number:true,maxlength:8,max:99999,min:0}"/>
+					</form-group>
+					<form-group>
+						<label for="query_yxxx_detail" text="允许下线" layoutconstraint="md:2;"/>
+						<text name="query_yxxx_detail" placeholder="请输入允许下线" layoutconstraint="md:4;sm:4;" validate="{required:false,number:true,maxlength:8,max:99999,min:0}"/>
+					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+				<button name="closeqyeryModalClick" label="取消" type="button" onClick="closeQueryWindow"></button>
+				<button name="qyeryModalClick" label="查询" type="button" context="primary" onClick="queryBtnClick"></button>
+				
+		</modal-footer>
+	</modal>
+
+	<attribute name="javascript">
+	<![CDATA[
+	
+		function openDetailWindow(name,rowid,table) {
+	    	var zjjgzbid = table.getCell(rowid,"zjjgzbid");
+	    	var ljid = table.getCell(rowid,"ljid");
+	    	var gxzid = table.getCell(rowid,"gxzid");
+	    	//详情查询条件
+	    	var query_jyxm =  ui.hidden("query_jyxm_detail_hid").val();
+	    	
+	    	var query_gyyq =  ui.hidden("query_gyyq_detail_hid").val();
+	    	var query_yxsx =  ui.hidden("query_yxsx_detail_hid").val();
+	    	var query_yxxx =  ui.hidden("query_yxxx_detail_hid").val();
+	    	
+	    	ui.table("table_jyjldetail").search({zjjgzbid:zjjgzbid,ljid:ljid,gxzid:gxzid,query_jyxm:query_jyxm,query_gyyq:query_gyyq,query_yxsx:query_yxsx,query_yxxx:query_yxxx});
+	    	ui.modal("modal_jyjldetail").show();
+	    	
+	    }
+	
+	
+		function openQueryWindow() {
+	    	ui.modal("qyeryModal").show();
+	    }	
+	    
+	    function resetQueryWindow() {
+	    	 $('#qyeryWlkcForm')[0].reset();
+			 ui.select('query_zjbz').val('');
+			 ui.select('query_zjjgbzw').val('');
+			 ui.select('query_jyxm_detail').val('');
+			 
+			 ui.hidden("query_jyxm_detail_hid").val('');
+	    	 ui.hidden("query_gyyq_detail_hid").val('');
+	    	 ui.hidden("query_yxsx_detail_hid").val('');
+	    	 ui.hidden("query_yxxx_detail_hid").val('');
+	    }
+	    
+		//查询
+		function queryBtnClick(){
+			var data_row = {};
+			data_row.query_xh = $('#query_xh').val();
+			data_row.query_zjbz = ui.select('query_zjbz').val();
+			data_row.query_zjjgbzw = ui.select('query_zjjgbzw').val();
+			/*
+			data_row.query_jyxm_detail = ui.select('query_jyxm_detail').val();
+			data_row.query_gyyq_detail = $('#query_gyyq_detail').val();
+			data_row.query_yxsx_detail = $('#query_yxsx_detail').val();
+			data_row.query_yxxx_detail = $('#query_yxxx_detail').val();
+			*/
+			
+			ui.hidden("query_jyxm_detail_hid").val(ui.select('query_jyxm_detail').val());
+    	 	ui.hidden("query_gyyq_detail_hid").val($('#query_gyyq_detail').val());
+    	 	ui.hidden("query_yxsx_detail_hid").val($('#query_yxsx_detail').val());
+    	 	ui.hidden("query_yxxx_detail_hid").val($('#query_yxxx_detail').val());
+			
+			ui.table("table_jyjl").search(data_row);
+			closeQueryWindow();
+		}
+		
+		//关闭	
+	    function closeQueryWindow(){
+	   	 	ui.modal("qyeryModal").hide();
+	    }
+	    
+	    
+		
+	]]>
+	</attribute>
+</view>

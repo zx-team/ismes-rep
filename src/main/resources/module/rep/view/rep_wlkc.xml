@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="rep_wlkc" title="工装库存查询">
+	<normal-actions>
+		<button name="queryBtn" label="查询"  type="button" icon="icon-query" onClick="openQueryWindow"></button>
+		<button name="queryBtn1" label="导出excel"  type="button" icon="icon-query" onClick="exportExcelQuery"></button>
+	</normal-actions>
+	<table name="table_wlkc" scroll="false"  url="/wlkc/table_wlkc" minheight="430" multiselect="false" layoutconstraint="md:12;sm:12;" >
+		<column label="工装编号" name="wlbh"></column>
+		<column label="工装名称" name="wlmc"></column>
+		<column label="工装类别" name="wllb" type="dict" dictionary="WLLB"></column>
+		<column label="库房" name="kfmc"></column>
+		<column label="库位" name="kwmc"></column>
+		<column label="设备位置" name="sbwz"></column>
+		<column label="领用时间" name="jssj" type="date" width="130"></column>
+		<column label="领用人" name="jsz"></column>
+		<column label="有效期" name="sysm"></column>
+		<column label="状态" name="kczt" type="dict" dictionary="KCZT"></column>
+	</table>
+	
+	<modal name="qyeryModal" heading="查询工装库存" sizing="large" show="false" keyboard="true">
+		<modal-body>
+			<form name="qyeryWlkcForm"  horizontal="true" layoutconstraint="md-offset:1">
+				<form-body>
+					<form-group>
+						<label for="query_wlbh" text="工装编号" layoutconstraint="md:2;"/>
+						<text name="query_wlbh" placeholder="请输入工装编号" layoutconstraint="md:4;sm:4;" validate="{required:true}"/> 
+						
+						<label for="query_wlmc" text="工装名称" layoutconstraint="md:2;"/>
+						<text name="query_wlmc" placeholder="请输入工装名称" validate="{required:true}" layoutconstraint="md:4;sm:4;"/>
+					</form-group>
+					<form-group>
+						<label for="query_wllb" text="工装类别" layoutconstraint="md:2;"/>
+						<select name="query_wllb" dictionary="WLLB"  placeholder="请选择工装类型" layoutconstraint="md:4;"></select>
+						
+						<label for="query_kczt" text="库存状态" layoutconstraint="md:2;"/>
+						<select name="query_kczt" dictionary="KCZT"  placeholder="请选择库存状态" layoutconstraint="md:4;"></select>
+					</form-group>
+					<form-group>
+						<label for="query_kfid" text="库房" layoutconstraint="md:2;"/>
+						<select name="query_kfid" url="/wlkc/kfSelect"  validate="{required:true}"  placeholder="请选择库房" layoutconstraint="md:4;" ></select> 
+						
+						<label for="query_kwid" text="库位" layoutconstraint="md:2;"/>
+						<select name="query_kwid" parent="query_kfid" url="/wlkc/kwSelect"  validate="{required:true}"  placeholder="请选择库位" layoutconstraint="md:4;" ></select> 
+					</form-group>
+					<form-group>
+						<label for="query_sbwz" text="设备位置" layoutconstraint="md:2;"/>
+						<text name="query_sbwz" placeholder="请输入设备位置" layoutconstraint="md:4;sm:4;" validate="{required:true}"/> 
+						
+						<label for="query_jsz" text="领用人" layoutconstraint="md:2;"/>
+						<text name="query_jsz" placeholder="请输入领用人" layoutconstraint="md:4;sm:4;" validate="{required:true}"/>
+					</form-group>
+					
+					<form-group>
+						<label for="query_jssj" text="领用时间" layoutconstraint="md:2"/>
+						<bunch layoutconstraint="md:8">
+							<input-inline width="medium">
+							<date name="query_jssjstart" placeholder="请输入起始日期" validate="{required:true}"/>
+							</input-inline>
+							<plaintext text="-"/>
+							<input-inline width="medium">
+							<date name="query_jssjend" placeholder="请输入结束日期" validate="{required:true}"/>
+							</input-inline>
+						</bunch>
+ 					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+				<button name="closeqyeryModalClick" label="取消" type="button" onClick="closeQueryWindow"></button>
+				<button name="qyeryModalClick" label="查询" type="button" context="primary" onClick="queryBtnClick"></button>
+				
+		</modal-footer>
+	</modal>
+	
+	<attribute name="javascript">
+	<![CDATA[
+		function openQueryWindow() {
+			resetQueryWindow();//清理数据
+	    	ui.modal("qyeryModal").show();
+	    }	
+	    
+	    function resetQueryWindow() {
+	    	 $('#qyeryWlkcForm')[0].reset();
+	    	 ui.select('query_wllb').val('');
+			 ui.select('query_kwid').val('');
+			 ui.select('query_kfid').val('');
+			 ui.select('query_kczt').val('');
+	    }
+	    //查询
+		function queryBtnClick(){
+			var data_row = {};
+			data_row.query_wlbh = $('#query_wlbh').val();
+			data_row.query_wlmc = $('#query_wlmc').val();
+			data_row.query_wllb = ui.select('query_wllb').val();
+			data_row.query_kwid = ui.select('query_kwid').val();
+			data_row.query_kfid = ui.select('query_kfid').val();
+			data_row.query_sbwz = $('#query_sbwz').val();
+			data_row.query_jsz = $('#query_jsz').val();
+			data_row.query_kczt = ui.select('query_kczt').val();
+			data_row.query_jssjstart = $('#query_jssjstart').val();
+			data_row.query_jssjend = $('#query_jssjend').val();
+			if(new Date(data_row.query_jssjstart)>new Date(data_row.query_jssjend))
+			{
+				ui.warn("接收时间区间开始时间必须小于结束时间!", "提示!");
+				return false;
+			}
+			ui.table("table_wlkc").search(data_row);
+			closeQueryWindow();
+		}
+		//关闭	
+	    function closeQueryWindow(){
+	   	 	ui.modal("qyeryModal").hide();
+	    }
+	    //excel导出
+		function exportExcelQuery(){
+			window.open(ui.getUrl("/rep/wlkc/table_wlkc")+"?export_flag=1"
+			+"&query_wlbh="+$('#query_wlbh').val()
+			+"&query_wlmc="+$('#query_wlmc').val()
+			+"&query_wllb="+ui.select('query_wllb').val()
+			+"&query_kwid="+ui.select('query_kwid').val()
+			+"&query_kfid="+ui.select('query_kfid').val()
+			+"&query_sbwz="+$('#query_sbwz').val()
+			+"&query_jsz="+$('#query_jsz').val()
+			+"&query_kczt="+ui.select('query_kczt').val()
+			+"&query_jssjstart="+$('#query_jssjstart').val()
+			+"&query_jssjend="+$('#query_jssjend').val()
+			)
+		}
+	]]>
+	</attribute>
+</view>
